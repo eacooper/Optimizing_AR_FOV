@@ -50,6 +50,8 @@ for type = [1 3] %stimulus types (Oval,Rect, AR) %change stimtype 2 -->1 as simp
     end
 end
 
+%save the proportion data for chi sq. test
+save('result.mat','propData');
 
 %% MAKE THE PLOT
 figure();
