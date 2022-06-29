@@ -1,7 +1,7 @@
 %% binarized data, compare between shape and AR
 clear all; close all;
 % load in data
-T = readtable('cont_resp_trial_data.csv');
+T = readtable('trial_by_trial_data_for_GLM.csv');
 
 % fields are: Subj    StimType    ConvDiv    Mfov    MonoReg    BinoReg    NumFade    TimePt    PropFade
 
@@ -16,13 +16,6 @@ T.PropFadeBin(T.PropFade >= 0.5) = 1;
 % change oval and rect into shape
 T.StimType(strcmp('oval',T.StimType))={'shape'};
 T.StimType(strcmp('rect',T.StimType))={'shape'};
-T.TotalFOV = T.BinoReg + 2*T.MonoReg;
-keyboard
-
-% run glme
-glme_full = fitglme(T,'PropFadeBin ~ 1 + TotalFOV + StimType + ConvDiv + TotalFOV:StimType + TotalFOV:ConvDiv + ConvDiv:StimType + (1|Subj)', ...
-    'Distribution','Binomial','Link','logit','FitMethod','Laplace', ...
-    'DummyVarCoding','reference','verbose',0);
 
 % run glme
 glme_full = fitglme(T,'PropFadeBin ~ 1 + BinoReg + StimType + ConvDiv + BinoReg:StimType + BinoReg:ConvDiv + ConvDiv:StimType + (1|Subj)', ...
