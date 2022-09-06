@@ -144,9 +144,7 @@ for st = [1 3] %stimulus types (oval, rect, AR) -- we're going to combine stimul
 end
 
 % save the data with fov calculations for use in the guidelines
-save('../Guidelines/avgdata.mat','fovlist');
-
-
+save('../PerceptualPredictions/avgdata.mat','fovlist');
 
 %% MAKE THE PLOTS
 %mean + errorbar
@@ -324,7 +322,7 @@ for p = 1:3 %for the three types of xaxis measure (bino region, total fov, prop 
     end
 end
 
-%fit through convergent and divergent data.
+%% fit a line to convergent and divergent data.
 %bino_size
 data = slist(slist(:,1)==3,[3 8]);
 m1= fitlm(data(:,1),data(:,2));
@@ -337,23 +335,23 @@ m3 = fitlm(data(:,1),data(:,2));
 
 %add in the regression line obtained from fitlm above
 x = 20:1:35.5;
-y = -0.017458.*x+1.106;
+y = m1.Coefficients{2,1}.*x+1.106;
 subplot(2,2,1)
 hold on;
-plot(x,y,'p-','HandleVisibility','off');
-title('adjR2=0.542'); %bino region
+plot(x,y,'-','HandleVisibility','off');
+title(['R2=',num2str(m1.Rsquared.Ordinary)]); 
 
 x = 34.5:1:50;
-y = -0.0028631.*x+0.73231;
+y = m2.Coefficients{2,1}.*x+0.73231;
 subplot(2,2,2)
 hold on;
-plot(x,y,'p-','HandleVisibility','off');
-title('adjR2=-0.148'); %total FOV
+plot(x,y,'-','HandleVisibility','off');
+title(['R2=',num2str(m2.Rsquared.Ordinary)]); 
 
 x = 10:1:30;
-y = 0.015709.*x+0.3035;
+y = m3.Coefficients{2,1}.*x+0.3035;
 subplot(2,2,3)
 hold on;
-plot(x,y,'p-');
-title('adjR2=0.823'); %ratio
+plot(x,y,'-');
+title(['R2=',num2str(m3.Rsquared.Ordinary)]); 
 legend('conv','div','regfit','Location','South');

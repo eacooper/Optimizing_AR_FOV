@@ -3,18 +3,22 @@
 clear all;
 close all;
 
-% load data from Exp 1, variable is slist
+% load data from Exp 1, variable is fovlist
 load('avgdata.mat');
 %	- col 1 = stimulus type (1=simple, 3 = AR)
 %	- col 2 = stimulus configuration (1 = convergent, 2 = divergent)
 %	- col 3 = binocular overlap size
 %	- col 4 = total FOV
 %	- col 5 = percentage of monocular region/monocular field
+%   - col 6 = monocular field (FOV) size
+%   - col 7 = monocular zone (region) size
+%   - col 8 = average proportion across participants
+%	- col 9-28 = individual's proportion
 
 %average the convergent and divergent
-new = [slist(9:12,8),slist(13:16,8)];
+new = [fovlist(9:12,8),fovlist(13:16,8)];
 new = mean(new,2);
-new = [slist(9:12,5) new];
+new = [fovlist(9:12,5) new];
 
 c = [51 127 186]./255; %marker color
 %plot the data points
