@@ -1,36 +1,32 @@
-%% do glme on oval vs rectangle stimulus
+%% do glme on SIMPLE vs AR stimuli
 clear all;
 
 %combine all participant data
 addpath('./data');
 N = 20;
-
-%load the first participant data and use its trial order to sort all other
-%participant data
-load('POL_1.mat');
-stimOrder = dat.stim;
 alldata = [];
+
 %load each participant's data
 for s = 1:N
     load(['POL_',num2str(s),'.mat']);
-    %dat.order = whether convergent is first or second
-    choseConverge = dat.resp==dat.order; %if 1, chose convergent(dat.order = the order of the convergent stimulus presented 
+    %did the participant chose convergent to be better?
+    choseConverge = dat.resp==dat.order; 
+    %add the response to this subject's data 
     subjdata = [ones(size(dat.stim,1),1)*s,dat.stim choseConverge];
-    
+    %add this subject's data to all subject's data
     alldata = [alldata; subjdata];
 end
 
-%for storing data
-subjid = {};%col1
-stimtype = {}; %col2
-monofield = []; %col4
-monozone = []; %col5
-resp = [];%col8
+%for storing data (categorical, numerical, logical)
+subjid = {};
+stimtype = {}; 
+monofield = []; 
+monozone = []; 
+resp = [];
 
-%coding the stimulus type as simple vs AR
+%recode stimulus type as simple (combining oval and rect) vs AR
 for n = 1:size(alldata,1)
     subjid{n,1} = ['S',num2str(alldata(n,1))];
-    
     if alldata(n,2)==1
         ST = 'simple';
     elseif alldata(n,2)==2
@@ -39,20 +35,21 @@ for n = 1:size(alldata,1)
         ST = 'AR';
     end
     
-    stimtype{n,1} = ST;
-    
+    stimtype{n,1} = ST; %subject id
     monofield(n,1) = alldata(n,4); %monocular FOV
     monozone(n,1) = alldata(n,5);  %monocular region
     binozone(n,1) = alldata(n,4) - alldata(n,5); %binocular overlap region
-    resp(n,1) = alldata(n,8);
+    resp(n,1) = alldata(n,8); %chose convergent
+    
 end
 
+%change stimulus type into categorical
 stimtype = categorical(stimtype);
 stimtype = reordercats(stimtype,{'simple','AR'});
 
 T = table(subjid,stimtype,monofield,monozone,binozone,resp);
 
-%main GLME
+%% main GLME
 glme_full = fitglme(T,'resp ~ 1 + stimtype + binozone + stimtype*binozone + (1|subjid)',...
     'Distribution','Binomial','Link','logit','FitMethod','Laplace', ...
     'DummyVarCoding','reference','verbose',0);
