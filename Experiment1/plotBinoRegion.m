@@ -1,8 +1,5 @@
 %% Figure 5, Figure 6 and Figure 7B
-
-% xaxis as binocular region, plotting the average and 95% CI, prop convergent
-% chosen as in Figure 5, and compute the difference between convergent and
-% divergent as in Figure 7B
+% This script plots the results of Experiment 1 as in the paper figures
 
 clear all;
 close all;
