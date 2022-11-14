@@ -4,6 +4,6 @@ This respository contained the code and data from the experiments and modelling 
 
 Perceptual Guidelines for Optimizing Field of View in Stereoscopic Augmented Reality Displays.
 M. Wang and E.A. Cooper
-ACM Transactions on Applied Perception, in press
+ACM Transactions on Applied Perception, 19(4):19, 2022
 
 See README files in each folder for details. 
